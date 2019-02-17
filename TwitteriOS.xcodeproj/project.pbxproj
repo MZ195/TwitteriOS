@@ -88,7 +88,6 @@
 				ECB2F8AD855ABBE324925E94 /* Pods-TwitteriOS.debug.xcconfig */,
 				87063427722C1C39D860AECF /* Pods-TwitteriOS.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
