@@ -16,6 +16,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var userImage: UIImageView!
     var imagePicker: UIImagePickerController!
+    var userUID:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +33,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if var img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             img = resizeImage(image: img, newWidth: 250)!
+            userImage.image = img
+            
             let storageRef = Storage.storage().reference(forURL: "gs://twitterapp-52392.appspot.com/")
             var data = NSData()
-            //data = UIImage.jpegData(img) as NSData
+            data = img.pngData() as! NSData
             
-            userImage.image = img
+            let dataFormat = DateFormatter()
+            dataFormat.dateFormat = "MM_DD_yy_h_mm_a"
+            
+            let imageName = "\(userUID)_\(dataFormat.string(from: NSDate() as Date))"
+            let imagePath = "prof_imgs/\(imageName).png"
+            let childUserImages = storageRef.child(imagePath)
+            
+            let metaData = StorageMetadata()
+            metaData.contentType = "image/png"
+            
+            // uploading
+            childUserImages.putData(data as Data, metadata: metaData)
         }
         imagePicker.dismiss(animated: true, completion: nil)
     }
@@ -48,7 +62,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let error = error {
                 print(error)
             } else {
-                print("Welcome")
+                self.userUID = user!.user.uid
             }
         }
     }
@@ -63,15 +77,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             if let error = error {
                 print(error)
             } else {
-                print()
+                self.userUID = user!.user.uid
             }
         }
     }
     
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
         
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
+        let newHeight = newWidth
         UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
         image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         
