@@ -61,11 +61,13 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - TOCropViewController (2.4.0)
 
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Storage
+  - TOCropViewController
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -80,6 +82,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - nanopb
+    - TOCropViewController
 
 SPEC CHECKSUMS:
   Firebase: 75ea9e232eefa158c1049028030b8f661a2ccb62
@@ -93,7 +96,8 @@ SPEC CHECKSUMS:
   GoogleUtilities: 06b66f9567769a7958db20a92f0128b2843e49d5
   GTMSessionFetcher: 0c4baf0a73acd0041bf9f71ea018deedab5ea84e
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  TOCropViewController: 368d8df3ea43b62c3dc5a61f11b9048274d240bd
 
-PODFILE CHECKSUM: 52f4efe8b7002376f40d86e72a1c9d72f2a7c921
+PODFILE CHECKSUM: 24bc6cc0987c5ade8b8c83630bd952a362a294d3
 
 COCOAPODS: 1.6.0
