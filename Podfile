@@ -10,4 +10,5 @@ target 'TwitteriOS' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'TOCropViewController'
+  pod 'Firebase/Database'
 end
