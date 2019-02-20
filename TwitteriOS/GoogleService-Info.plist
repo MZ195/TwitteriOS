@@ -23,18 +23,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>twitterapp-52392.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:683938913863:ios:ff7c1c551fb7967c</string>
 	<key>DATABASE_URL</key>
-	<string>https://twitterapp-52392.firebaseio.com</string>
+	<string>https://twitterapp-52392.firebaseio.com/</string>
 </dict>
 </plist>
