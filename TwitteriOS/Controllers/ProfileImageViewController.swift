@@ -93,6 +93,12 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
         let data = [ "UserFullName": username,
                      "Email": email,
                      "UserImagePath": imgPath]  as [String : Any]
+        
+        let defaultData = ["uid" : "A100",
+                           "author": "Twitter main",
+                           "author_img":"",
+                           "content" : "Welcome to this app bitch",
+                           "Date" : Date()] as [String : Any]
         self.databaseRef.child("Users").child(self.userUID!).setValue(data)
         self.databaseRef.child("Timeline").child(self.userUID!)
         
@@ -106,6 +112,14 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
                 print("Document inserted successfully with ID: \(ref!.documentID)")
             }
         }
+        
+        ref = self.fireStoreDatabaseRef
+            .collection("all_timelines")
+            .document("\(self.userUID!)")
+        
+        ref?.collection("timeline")
+            .document("A100")
+            .setData(defaultData)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

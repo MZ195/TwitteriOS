@@ -16,6 +16,8 @@ class NewPostViewController: UIViewController {
     var databaseRef = DatabaseReference.init()
     var userID:String?
     var username:String?
+    var userImage:String?
+    let followersList = ["CHezMkrh1uYJMHaALL0zjBJWxUA2", "fl1xfGABm1UCmdoAbgjMjQ22Ex63"]
     
     @IBOutlet weak var postContent: UITextView!
     
@@ -35,7 +37,13 @@ class NewPostViewController: UIViewController {
         super.viewDidLoad()
         databaseRef = Database.database().reference()
         userID = Auth.auth().currentUser?.uid
-        username = Auth.auth().currentUser?.displayName
+        
+        databaseRef.child("Users").child(userID!).observe(.value) { (snapshot) in
+            if let dictionary = snapshot.value as? [String:AnyObject]{
+                self.username = dictionary["UserFullName"] as? String
+                self.userImage = dictionary["UserImagePath"] as? String
+            }
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -46,19 +54,36 @@ class NewPostViewController: UIViewController {
     @objc func handelNewPost() {
         
         let postDetails = ["uid" : userID,
-                           "author": userID,
+                           "author": username,
+                           "author_img":userImage,
                            "content" : postContent.text,
-                           "Date" : ServerValue.timestamp()] as [String : Any]
+                           "Date" : Date()] as [String : Any]
 
         var ref:DocumentReference? = nil
-        ref = self.fireStoreDatabaseRef.collection("Posts").addDocument(data: postDetails){
-            error in
-            
-            if let error = error {
-                print("Error adding document \(error)")
-            }else{
-                print("Document inserted successfully with ID: \(ref!.documentID)")
-                self.databaseRef.child("Timeline").child(self.userID!).child("\(ref!.documentID)").setValue(postDetails)
+//        ref = self.fireStoreDatabaseRef.collection("Posts").addDocument(data: postDetails){
+//            error in
+//
+//            if let error = error {
+//                print("Error adding document \(error)")
+//            }else{
+//                print("Document inserted successfully with ID: \(ref!.documentID)")
+//                self.databaseRef.child("Timeline").child(self.userID!).childByAutoId().setValue("\(ref!.documentID)")
+//            }
+//        }
+        
+        for eachUser in followersList{
+            ref = self.fireStoreDatabaseRef
+                .collection("all_timelines")
+                .document(eachUser)
+                .collection("timeline")
+                .addDocument(data: postDetails){
+                    error in
+                    
+                    if let error = error {
+                        print("Error adding document \(error)")
+                    }else{
+                        print("Document inserted successfully with ID: \(ref!.documentID)")
+                    }
             }
         }
         

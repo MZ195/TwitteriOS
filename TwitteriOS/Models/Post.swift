@@ -11,9 +11,11 @@ import UIKit
 class Post: NSObject {
     var username:String?
     var postContent:String?
+    var userImage:String?
     
-    init(userName:String, content:String) {
+    init(userName:String, content:String, img:String?) {
         self.username = userName
         self.postContent = content
+        self.userImage = img
     }
 }
