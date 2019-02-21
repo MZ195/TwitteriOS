@@ -15,6 +15,7 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var uploadButton: UIButton!
     var imagePicker: UIImagePickerController!
+    var fireStoreDatabaseRef = Firestore.firestore()
     var databaseRef = DatabaseReference.init()
     var imagePath:String?
     
@@ -50,6 +51,7 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
         userImage.image = compressedImage
         
         // getting the storage reference from firebase
+        
         let storageRef = Storage.storage().reference(forURL: "gs://twitterapp-52392.appspot.com/")
         var data = NSData()
         data = compressedImage.pngData() as! NSData
@@ -61,10 +63,10 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
         let imageName = "\(userUID!)_\(dataFormat.string(from: NSDate() as Date))"
         imagePath = "prof_imgs/\(imageName).png"
         let childUserImages = storageRef.child(imagePath!)
-        
+
         let metaData = StorageMetadata()
         metaData.contentType = "image/png"
-        
+
         // uploading
         childUserImages.putData(data as Data, metadata: metaData)
         
@@ -90,16 +92,26 @@ class ProfileImageViewController: UIViewController, UIImagePickerControllerDeleg
     func saveUserData(imgPath:String, username:String, email:String){
         let data = [ "UserFullName": username,
                      "Email": email,
-                     "UserImagePath": imgPath]
+                     "UserImagePath": imgPath]  as [String : Any]
         self.databaseRef.child("Users").child(self.userUID!).setValue(data)
         self.databaseRef.child("Timeline").child(self.userUID!)
+        
+        var ref:DocumentReference? = nil
+        ref = self.fireStoreDatabaseRef.collection("Users").addDocument(data: data) {
+            error in
+            
+            if let error = error {
+                print("Error adding document \(error)")
+            }else{
+                print("Document inserted successfully with ID: \(ref!.documentID)")
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.destination is TimelineViewController
         {
             let vc = segue.destination as? TimelineViewController
-            vc!.userUID = self.userUID
         }
     }
 }

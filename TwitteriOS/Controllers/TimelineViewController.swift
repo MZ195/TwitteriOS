@@ -7,19 +7,63 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseFirestore
 
 class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
+   
     @IBOutlet weak var postsTable: UITableView!
-    var userUID:String?
+    @IBOutlet weak var roundButton:UIButton!
+    
     var posts = [Post]()
-    var databaseRef = DatabaseReference.init()
+    var db:Firestore!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         postsTable.delegate = self
         postsTable.dataSource = self
+        
+        self.roundButton.setTitleColor(UIColor.orange, for: .normal)
+        self.roundButton.layer.cornerRadius = roundButton.layer.frame.size.width/2
+        self.view.addSubview(self.roundButton)
+        
+        db = Firestore.firestore()
+        loadData()
+        checkForUpdate()
+    }
+    
+    func loadData() {
+        db.collection("Posts").getDocuments(){
+            QuerySnapshot, error in
+            if let error = error {
+                print("\(error.localizedDescription)")
+            }else{
+                self.posts = (QuerySnapshot?.documents.flatMap({Post(userName: $0.data()["author"] as! String, content: $0.data()["content"] as! String)}))!
+                DispatchQueue.main.async {
+                    self.postsTable.reloadData()
+                }
+            }
+        }
+    }
+    
+    func checkForUpdate() {
+        db.collection("Posts").whereField("Date", isGreaterThan: Date())
+            .addSnapshotListener { QuerySnapshot, Error in
+                if let error = Error {
+                    print("\(error.localizedDescription)")
+                }else{
+                    guard let snapshot = QuerySnapshot else {return }
+                    
+                    snapshot.documentChanges.forEach({ (DocumentChange) in
+                        if DocumentChange.type == .added {
+                            self.posts.append(Post(userName: DocumentChange.document.data()["author"] as! String, content: DocumentChange.document.data()["content"] as! String))
+                            DispatchQueue.main.async {
+                                self.postsTable.reloadData()
+                            }
+                        }
+                    })
+                }
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -362,7 +362,7 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="BQo-Pn-ZVu" kind="presentation" id="tVI-gU-E5i"/>
+                                                        <segue destination="BQo-Pn-ZVu" kind="presentation" identifier="newPost" id="tVI-gU-E5i"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -390,11 +390,26 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQX-HH-mLI">
+                                <rect key="frame" x="334" y="656" width="50" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="QJO-RI-bi1"/>
+                                    <constraint firstAttribute="width" constant="50" id="WKl-iK-QP6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Post"/>
+                                <connections>
+                                    <segue destination="BQo-Pn-ZVu" kind="presentation" id="Oqp-Og-pfn"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.19128635529999999" green="0.1914627552" blue="0.19131368400000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9oM-gg-slB" firstAttribute="trailing" secondItem="uwb-5p-Qet" secondAttribute="trailing" id="37n-VZ-maj"/>
                             <constraint firstItem="uwb-5p-Qet" firstAttribute="top" secondItem="41B-V7-1us" secondAttribute="top" id="d8b-G4-gzy"/>
+                            <constraint firstItem="9oM-gg-slB" firstAttribute="trailing" secondItem="DQX-HH-mLI" secondAttribute="trailing" constant="30" id="eJO-AW-7QO"/>
+                            <constraint firstItem="9oM-gg-slB" firstAttribute="bottom" secondItem="DQX-HH-mLI" secondAttribute="bottom" constant="30" id="eYd-hl-63A"/>
                             <constraint firstItem="9oM-gg-slB" firstAttribute="bottom" secondItem="uwb-5p-Qet" secondAttribute="bottom" id="m0x-wJ-I5O"/>
                             <constraint firstItem="uwb-5p-Qet" firstAttribute="leading" secondItem="9oM-gg-slB" secondAttribute="leading" id="qf8-fZ-4nf"/>
                         </constraints>
@@ -402,6 +417,7 @@
                     </view>
                     <connections>
                         <outlet property="postsTable" destination="uwb-5p-Qet" id="mqc-K5-SHc"/>
+                        <outlet property="roundButton" destination="DQX-HH-mLI" id="9Gd-Wm-u4f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="evA-X7-SUs" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -475,6 +491,7 @@
         <image name="twitter_icon" width="1600" height="1600"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="tVI-gU-E5i"/>
         <segue reference="09M-8w-B3J"/>
     </inferredMetricsTieBreakers>
 </document>
