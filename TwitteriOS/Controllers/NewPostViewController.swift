@@ -46,9 +46,9 @@ class NewPostViewController: UIViewController {
     @objc func handelNewPost() {
         
         let postDetails = ["uid" : userID,
-                           "author": username,
+                           "author": userID,
                            "content" : postContent.text,
-            "Date" : ServerValue.timestamp()] as [String : Any]
+                           "Date" : ServerValue.timestamp()] as [String : Any]
 
         var ref:DocumentReference? = nil
         ref = self.fireStoreDatabaseRef.collection("Posts").addDocument(data: postDetails){

@@ -47,7 +47,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func checkForUpdate() {
-        db.collection("Posts").whereField("Date", isGreaterThan: Date())
+        db.collection("Posts")
             .addSnapshotListener { QuerySnapshot, Error in
                 if let error = Error {
                     print("\(error.localizedDescription)")
